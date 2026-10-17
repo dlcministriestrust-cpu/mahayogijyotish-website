@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Mahayogi Ankha Jyotish Calculator</title>
+<meta name="description" content="Contact us, or share your experience with the Mahayogi Ankha Jyotish Calculator.">
+<meta name="keywords" content="Jyotish, Vedic astrology, Prashna, horary astrology, Vedic number astrology, numerical astrology, numerology, Vedic numerology, Ank Jyotish, Ankha Jyotish, question chart, Parashari, Parashara, online astrology reading, ask a question, yes or no answer, spiritual guidance, love and relationship reading, career reading, money and finance reading, decision guidance, alternative to a psychic reading">
+<meta property="og:title" content="Contact — Mahayogi Ankha Jyotish Calculator">
+<meta property="og:description" content="Contact us, or share your experience with the Mahayogi Ankha Jyotish Calculator.">
+<meta property="og:image" content="https://mahayogijyotish.com/images/logo.jpg">
+<link rel="icon" href="images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="index.html"><img src="images/icon.png" alt=""><span>Mahayogi Ankha Jyotish</span></a>
+<nav><a href="index.html">Home</a><a href="what-is-ankha-jyotish.html">What is it?</a><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a><a href="about.html">About</a><a href="contact.html" class=on>Contact</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Contact</h1>
+<div class="card">
+<form id="contact" action="https://api.web3forms.com/submit" method="POST">
+<input type="hidden" name="access_key" value="f3d823d1-e835-4264-abe5-99dcf6358ac0">
+<input type="hidden" name="subject" id="subj" value="">
+<input type="hidden" name="from_name" value="MahayogiJyotish.com">
+<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+<label for="topic">What is this about?</label>
+<select id="topic" name="topic" required>
+<option value="" selected disabled>Choose one…</option>
+<option value="comment">Share my experience</option>
+<option value="account">Refund, cancel my plan, or delete my account</option>
+<option value="howto">How do I use the Calculator?</option>
+<option value="other">Something else, or a problem</option>
+</select>
+
+<div id="answer-account" class="answer">
+<p>These are handled instantly in your account at app.mahayogijyotish.com — no need to write to us:</p>
+<ul>
+<li><strong>Refund my unused questions</strong> (within 14 days of purchase)</li>
+<li><strong>Cancel my monthly plan</strong></li>
+<li><strong>Delete my account</strong></li>
+</ul>
+<p>The rules are on the <a href="pricing.html#refunds">Pricing page</a>.</p>
+</div>
+
+<div id="answer-howto" class="answer">
+<p>Most answers are in the <a href="faq.html">FAQ</a> and in <a href="what-is-ankha-jyotish.html#how-to-ask-well">How to ask well</a>. If you still need help, choose <em>Something else, or a problem</em>.</p>
+</div>
+
+<div id="fields" class="answer">
+<p id="intro-comment" class="answer">Has a reading helped you? We would love to hear about it.</p>
+<p id="intro-other" class="answer">Tell us what happened. We aim to reply within two business days.</p>
+<label for="n">First name</label>
+<input id="n" name="first_name" maxlength="60">
+<label for="e">Email (never shown)</label>
+<input id="e" name="email" type="email">
+<label for="m" id="m-label">Your message</label>
+<textarea id="m" name="message"></textarea>
+<p class="consent answer" id="consent">By posting, you agree we may share your comment, with your first name only, on our website and promotions.</p>
+<button class="btn" type="submit">Send</button>
+<p id="status"></p>
+</div>
+</form>
+</div>
+
+<!-- TESTIMONIALS: when Cliff approves a comment, add it here (first name only, words as written) and remove the comment markers.
+<h2>What people are saying</h2>
+<div class="testimonial">"Words exactly as written."<cite>— First name</cite></div>
+<p class="note">Individual experiences vary.</p>
+-->
+
+<script>
+(function(){
+  var f=document.getElementById('contact'), topic=document.getElementById('topic');
+  function show(id,on){document.getElementById(id).style.display=on?'block':'none';}
+  function update(){
+    var t=topic.value, send=(t==='comment'||t==='other');
+    show('answer-account',t==='account'); show('answer-howto',t==='howto');
+    show('fields',send); show('intro-comment',t==='comment'); show('intro-other',t==='other');
+    show('consent',t==='comment');
+    document.getElementById('m-label').textContent = t==='comment' ? 'Your experience' : 'Your message';
+    ['n','e','m'].forEach(function(id){document.getElementById(id).required=send;});
+    document.getElementById('subj').value = t==='comment'
+      ? '[COMMENT] Experience shared on MahayogiJyotish.com'
+      : '[NEEDS ME] Message from MahayogiJyotish.com';
+  }
+  topic.addEventListener('change',update); update();
+  f.addEventListener('submit', async function(ev){
+    ev.preventDefault();
+    var b=f.querySelector('button'), st=document.getElementById('status');
+    b.disabled=true; b.textContent='Sending…'; st.textContent='';
+    try{
+      var r=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}});
+      if(!r.ok) throw 0;
+      f.innerHTML='<p style="color:var(--gold-soft)">Thank you — your message has been sent.</p>';
+    }catch(e){
+      b.disabled=false; b.textContent='Send';
+      st.textContent='Sorry, that did not go through. Please try again in a moment.';
+    }
+  });
+})();
+</script>
+
+</div></main>
+<footer class="site"><div class="wrap">
+<a href="terms.html">Terms of Use</a> · <a href="privacy.html">Privacy Policy</a> · <a href="pricing.html#refunds">Refunds</a> · <a href="contact.html">Contact</a>
+<div>© 2026 MahayogiJyotish.com</div>
+<div class="disc">The Calculator gives guidance, not certainty, and is not a substitute for medical, legal or financial advice.</div>
+</div></footer>
+</body>
+</html>
