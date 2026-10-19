@@ -108,7 +108,10 @@
     try{
       var r=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}});
       if(!r.ok) throw 0;
-      f.innerHTML='<p style="color:var(--gold-soft)">Thank you — your message has been sent.</p>';
+      var msg = topic.value==='comment'
+        ? 'Thank you for sharing your experience. It has arrived safely.'
+        : 'Thank you — your message has arrived. We aim to reply within two business days.';
+      f.innerHTML='<p style="color:var(--gold-soft)">'+msg+'</p>';
     }catch(e){
       b.disabled=false; b.textContent='Send';
       st.textContent='Sorry, that did not go through. Please try again in a moment.';
