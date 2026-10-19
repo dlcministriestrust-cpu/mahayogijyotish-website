@@ -35,13 +35,11 @@
 </svg></div>
 <div class="card">
 <div id="sent" class="answer"><p style="color:var(--gold-soft)" id="sent-msg"></p></div>
-<form id="contact" action="https://formsubmit.co/support@mahayogijyotish.com" method="POST">
-<input type="hidden" name="_subject" id="subj" value="">
-<input type="hidden" name="_autoresponse" id="auto" value="">
-<input type="hidden" name="_next" id="next" value="https://mahayogijyotish.com/contact.html?sent=other">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_template" value="table">
-<input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off">
+<form id="contact" action="https://api.web3forms.com/submit" method="POST">
+<input type="hidden" name="access_key" value="f3d823d1-e835-4264-abe5-99dcf6358ac0">
+<input type="hidden" name="subject" id="subj" value="">
+<input type="hidden" name="from_name" value="MahayogiJyotish.com">
+<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" style="display:none">
 
 <label for="topic">What is this about?</label>
 <select id="topic" name="topic" required>
@@ -107,26 +105,23 @@
     comment:'Thank you for sharing your experience. It has arrived safely.',
     other:'Thank you — your message has arrived. We aim to reply within two business days.'
   };
-  var AUTO={
-    comment:'Thank you for sharing your experience with the Mahayogi Ankha Jyotish Calculator. It has arrived safely, and we are grateful you took the time to write. With blessings, Mahayogi Jyotish Support',
-    other:'Thank you for writing to the Mahayogi Ankha Jyotish Calculator. Your message has arrived, and we aim to reply within two business days. With blessings, Mahayogi Jyotish Support'
-  };
-  function setHidden(){
+  f.addEventListener('submit', function(ev){
+    ev.preventDefault();
     var k = topic.value==='comment' ? 'comment' : 'other';
-    document.getElementById('auto').value = AUTO[k];
-    document.getElementById('next').value = 'https://mahayogijyotish.com/contact.html?sent='+k;
-  }
-  topic.addEventListener('change',setHidden); setHidden();
-  f.addEventListener('submit', function(){
-    setHidden();
     var b=f.querySelector('button'); b.disabled=true; b.textContent='Sending…';
+    fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(!d.success) throw new Error('not sent');
+        f.style.display='none';
+        document.getElementById('sent-msg').textContent=THANKS[k];
+        document.getElementById('sent').style.display='block';
+      })
+      .catch(function(){
+        b.disabled=false; b.textContent='Send';
+        alert('Sorry — your message did not send. Please try again in a moment.');
+      });
   });
-  var sent=(location.search.match(/[?&]sent=(comment|other)/)||[])[1];
-  if(sent){
-    f.style.display='none';
-    document.getElementById('sent-msg').textContent=THANKS[sent];
-    document.getElementById('sent').style.display='block';
-  }
 })();
 </script>
 
